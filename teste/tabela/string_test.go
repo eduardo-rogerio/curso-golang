@@ -1,6 +1,6 @@
 package main
 
-import "test"
+import "testing"
 
 const msgIndex = "%s (parte: %s) - Índices: esperado (%d) <> encontrado (%d)"
 
