@@ -2,7 +2,7 @@ package main
 
 import (
   "database/sql"
-  "github.com/go-sql-driver/mysql"
+  _ "github.com/go-sql-driver/mysql"
 )
 
 func exec(db *sql.DB, sql string) sql.Result {
@@ -14,16 +14,17 @@ func exec(db *sql.DB, sql string) sql.Result {
 }
 
 func main() {
-  cfg := mysql.Config{
-    User: "homestead",
-    Passwd: "secret",
-    Net: "tcp",
-    Addr: "127.0.0.1:33060",
-  }
-  db, err := sql.Open("mysql", cfg.FormatDSN())
+  db, err := sql.Open("mysql", "homestead:secret@tcp(localhost:33060)/")
   if err != nil {
     panic(err)
   }
   defer db.Close()
   exec(db, "create database if not exists cursogo")
-}
+  exec(db, "use cursogo")
+  exec(db, "drop table if exists usuarios")
+  exec(db, `create table usuarios (
+          id integer auto_increment,
+          nome varchar(80),
+          PRIMARY KEY (id)
+    )`)
+} 
